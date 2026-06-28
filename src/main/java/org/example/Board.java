@@ -1,14 +1,17 @@
 package org.example;
+import java.util.ArrayList;
 
 public class Board {
-    private char[][] grid;
+    private ArrayList<ArrayList<Character>> grid;
 
     public Board() {
-        grid = new char[3][3];
+        grid = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
+            ArrayList<Character> row = new ArrayList<>();
             for (int j = 0; j < 3; j++) {
-                grid[i][j] = ' ';
+                row.add(' ');
             }
+            grid.add(row);
         }
     }
 
@@ -16,11 +19,15 @@ public class Board {
         if (row < 0 || row > 2 || column < 0 || column > 2) {
             return false;
         }
-        if (grid[row][column] == ' ') {
-            grid[row][column] = symbol;
+        if (grid.get(row).get(column) == ' ') {
+            grid.get(row).set(column, symbol);
             return true;
         }
         return false;
+    }
+
+    public char getCell(int row, int column) {
+        return grid.get(row).get(column);
     }
 
     public void printBoard() {
@@ -28,28 +35,22 @@ public class Board {
         for (int i = 0; i < 3; i++) {
             System.out.print("|");
             for (int j = 0; j < 3; j++) {
-                System.out.print(grid[i][j] + "|");
+                System.out.print(grid.get(i).get(j) + "|");
             }
             System.out.println();
         }
         System.out.println("▔▔▔▔");
     }
 
-    public char getCell(int row, int column) {
-        return grid[row][column];
-    }
-
     public boolean checkWin(char symbol) {
-        // Check rows and columns
         for (int i = 0; i < 3; i++) {
-            if ((grid[i][0] == symbol && grid[i][1] == symbol && grid[i][2] == symbol) ||
-                    (grid[0][i] == symbol && grid[1][i] == symbol && grid[2][i] == symbol)) {
+            if ((grid.get(i).get(0) == symbol && grid.get(i).get(1) == symbol && grid.get(i).get(2) == symbol) ||
+                    (grid.get(0).get(i) == symbol && grid.get(1).get(i) == symbol && grid.get(2).get(i) == symbol)) {
                 return true;
             }
         }
-        // Check diagonals
-        if ((grid[0][0] == symbol && grid[1][1] == symbol && grid[2][2] == symbol) ||
-                (grid[0][2] == symbol && grid[1][1] == symbol && grid[2][0] == symbol)) {
+        if ((grid.get(0).get(0) == symbol && grid.get(1).get(1) == symbol && grid.get(2).get(2) == symbol) ||
+                (grid.get(0).get(2) == symbol && grid.get(1).get(1) == symbol && grid.get(2).get(0) == symbol)) {
             return true;
         }
         return false;
@@ -58,12 +59,19 @@ public class Board {
     public boolean isFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (grid[i][j] == ' ') {
-                    return false; // Found an empty space
+                if (grid.get(i).get(j) == ' ') {
+                    return false;
                 }
             }
         }
-        return true; // No empty spaces left
+        return true;
     }
 
+    public void resetBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                grid.get(i).set(j, ' ');
+            }
+        }
+    }
 }
