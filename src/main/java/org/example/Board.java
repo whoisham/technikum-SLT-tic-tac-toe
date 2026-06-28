@@ -2,64 +2,30 @@ package org.example;
 import java.util.ArrayList;
 
 public class Board {
-    private ArrayList<ArrayList<Character>> grid;
+    private char[][] cells;
 
     public Board() {
-        grid = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            ArrayList<Character> row = new ArrayList<>();
-            for (int j = 0; j < 3; j++) {
-                row.add(' ');
-            }
-            grid.add(row);
-        }
+        cells = new char[3][3];
+        clear();
     }
 
-    public boolean makeMove(int row, int column, char symbol) {
-        if (row < 0 || row > 2 || column < 0 || column > 2) {
+    public boolean isCellEmpty(int x, int y) {
+        if (x < 0 || x > 2 || y < 0 || y > 2) {
             return false;
         }
-        if (grid.get(row).get(column) == ' ') {
-            grid.get(row).set(column, symbol);
-            return true;
-        }
-        return false;
+        return cells[x][y] == ' ';
     }
 
-    public char getCell(int row, int column) {
-        return grid.get(row).get(column);
-    }
-
-    public void printBoard() {
-        System.out.println("▁▁▁▁▁▁");
-        for (int i = 0; i < 3; i++) {
-            System.out.print("|");
-            for (int j = 0; j < 3; j++) {
-                System.out.print(grid.get(i).get(j) + "|");
-            }
-            System.out.println();
+    public void place(int x, int y, char marker) {
+        if (x >= 0 && x <= 2 && y >= 0 && y <= 2) {
+            cells[x][y] = marker;
         }
-        System.out.println("▔▔▔▔");
-    }
-
-    public boolean checkWin(char symbol) {
-        for (int i = 0; i < 3; i++) {
-            if ((grid.get(i).get(0) == symbol && grid.get(i).get(1) == symbol && grid.get(i).get(2) == symbol) ||
-                    (grid.get(0).get(i) == symbol && grid.get(1).get(i) == symbol && grid.get(2).get(i) == symbol)) {
-                return true;
-            }
-        }
-        if ((grid.get(0).get(0) == symbol && grid.get(1).get(1) == symbol && grid.get(2).get(2) == symbol) ||
-                (grid.get(0).get(2) == symbol && grid.get(1).get(1) == symbol && grid.get(2).get(0) == symbol)) {
-            return true;
-        }
-        return false;
     }
 
     public boolean isFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (grid.get(i).get(j) == ' ') {
+                if (cells[i][j] == ' ') {
                     return false;
                 }
             }
@@ -67,11 +33,27 @@ public class Board {
         return true;
     }
 
-    public void resetBoard() {
+    public void clear() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                grid.get(i).set(j, ' ');
+                cells[i][j] = ' ';
             }
         }
+    }
+
+    public void print() {
+        System.out.println("▁▁▁▁▁▁");
+        for (int i = 0; i < 3; i++) {
+            System.out.print("|");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(cells[i][j] + "|");
+            }
+            System.out.println();
+        }
+        System.out.println("▔▔▔▔");
+    }
+
+    public char getCell(int x, int y) {
+        return cells[x][y];
     }
 }
