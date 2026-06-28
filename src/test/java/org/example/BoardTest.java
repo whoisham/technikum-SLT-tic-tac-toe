@@ -44,4 +44,35 @@ class BoardTest {
         assertEquals('O', board.getCell(1, 1));
         assertEquals(' ', board.getCell(2, 2));
     }
+
+    @Test
+    void testHorizontalWinCondition() {
+        Board board = new Board();
+        board.makeMove(0, 0, 'X');
+        board.makeMove(0, 1, 'X');
+        board.makeMove(0, 2, 'X');
+
+        // Positive case: 3 in a row horizontally returns true
+        assertTrue(board.checkWin('X'));
+        // Negative case: 'O' shouldn't be flagged as winning
+        assertFalse(board.checkWin('O'));
+    }
+
+    @Test
+    void testBoardIsFullCondition() {
+        Board board = new Board();
+        // Fill up the board mock-style
+        char[][] moves = {
+                {'X', 'O', 'X'},
+                {'X', 'X', 'O'},
+                {'O', 'X', 'O'}
+        };
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3; j++) {
+                board.makeMove(i, j, moves[i][j]);
+            }
+        }
+        // Positive case: Full grid returns true
+        assertTrue(board.isFull());
+    }
 }

@@ -4,12 +4,13 @@ import java.util.Scanner;
 
 
 public class Main {
-    static void main(String[] sender) {
+    public static void main(String[] args) {
         Board board = new Board();
         Scanner scanner = new Scanner(System.in);
         char currentPlayer = 'X';
+        boolean gameOver = false;
 
-        for (int turn = 0; turn < 3; turn++) {
+        while (!gameOver) {
             System.out.println("Current Player: " + currentPlayer);
             board.printBoard();
 
@@ -19,11 +20,22 @@ public class Main {
             int col = scanner.nextInt();
 
             if (board.makeMove(row, col, currentPlayer)) {
-                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                if (board.checkWin(currentPlayer)) {
+                    board.printBoard();
+                    System.out.println("Player " + currentPlayer + " wins the game!");
+                    gameOver = true;
+                } else if (board.isFull()) {
+                    board.printBoard();
+                    System.out.println("The game ended in a draw!");
+                    gameOver = true;
+                } else {
+                    // Switch players
+                    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                }
             } else {
                 System.out.println("Invalid move! Try again.");
-                turn--;
             }
         }
+        scanner.close();
     }
 }
